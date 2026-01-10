@@ -81,6 +81,14 @@ A modern, responsive web interface is included.
 2.  Open your browser to: `http://localhost:8000`
 3.  Use the tabs to switch between **Text Input** and **Image Upload**.
 
+### 5. Deployment (Vercel)
+
+This project is configured for easy deployment on [Vercel](https://vercel.com).
+
+1.  **Install Vercel CLI**: `npm i -g vercel`
+2.  **Deploy**: Run `vercel` in the project directory.
+3.  **Environment Variables**: exact same `.env` values (add `GOOGLE_API_KEY` in Vercel settings).
+
 ### C. Output Format
 
 The API returns a detailed JSON object showing the full pipeline:

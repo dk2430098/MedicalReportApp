@@ -15,5 +15,8 @@
         "@google/generative-ai": "^0.11.1"
     },
     "author": "Deepak Kumar",
-    "license": "MIT"
+    "license": "MIT",
+    "engines": {
+        "node": ">=18.0.0"
+    }
 }

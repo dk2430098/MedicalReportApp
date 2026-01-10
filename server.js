@@ -272,7 +272,12 @@ app.post('/process-image', upload.single('file'), async (req, res) => {
   }
 });
 
-// Start Server
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+// Start Server (Only if running directly)
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
+  });
+}
+
+// Export for Vercel
+module.exports = app;
