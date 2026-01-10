@@ -39,7 +39,7 @@ app = FastAPI(
 
 class ReportRequest(BaseModel):
     text: str
-    model: str = "gemini-flash-latest"
+    model: str = "gemini-1.5-flash"
 
 @app.get("/")
 def read_root():
