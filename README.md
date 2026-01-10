@@ -1,39 +1,72 @@
 # AI-Powered Medical Report Simplifier
 
-A backend service and CLI tool that converts medical reports (text or images) into structured, patient-friendly JSON using Google Gemini's AI.
+A smart web application that converts medical reports (text or images) into structured, patient-friendly JSON using Google Gemini's AI.
+
+![Frontend UI](https://dummyimage.com/800x400/0f172a/3b82f6.png&text=Medical+Report+Simplifier+UI)
 
 ## 🚀 Key Features
 
+*   **Web Interface**: Clean, glassmorphism-style UI for easy interaction (Mobile Responsive).
 *   **Multi-Modal Input**: Accepts raw text OR images (OCR via Gemini Vision).
 *   **Structured Output**: Normalizes test names, values, units, and status (High/Low/Normal).
 *   **Patient-Friendly Summary**: Generates simple, non-diagnostic explanations.
 *   **Strict Guardrails**: Prevents hallucination of tests not present in the input.
-*   **API Ready**: Includes a FastAPI server for integration.
 
-## 🛠️ Setup & Installation
+---
 
-### Prerequisites
-*   Python 3.10+
-*   Google Gemini API Key (Get it from [Google AI Studio](https://aistudio.google.com/app/apikey))
+## 🛠️ Quick Start (Recommended)
 
-### 1. Install Dependencies
+This project is a **Node.js** application.
+
+### 1. Prerequisites
+*   Node.js 18+ installed.
+*   Google Gemini API Key (Get it from [Google AI Studio](https://aistudio.google.com/app/apikey)).
+
+### 2. Setup
+```bash
+# Clone repository
+git clone https://github.com/dk2430098/MedicalReportApp.git
+cd MedicalReportApp
+
+# Install dependencies
+npm install
+
+# Configure API Key
+echo "GOOGLE_API_KEY=your_actual_api_key_here" > .env
+```
+
+### 3. Run the App
+```bash
+node server.js
+```
+Open your browser to: **http://localhost:8000**
+
+---
+
+## ☁️ Deployment (Vercel)
+
+This project is configured for one-click deployment on [Vercel](https://vercel.com).
+
+1.  **Install Vercel CLI**: `npm i -g vercel`
+2.  **Deploy**: Run `vercel` in the project directory.
+    *   *Select "Other" as the framework preset if asked.*
+3.  **Environment Variables**: Add `GOOGLE_API_KEY` in your Vercel Project Settings.
+
+---
+
+## 🐍 Advanced: Using Python (CLI / Backend)
+
+*(Optional) If you prefer a Python-only environment.*
+
+### Setup
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configure API Key
-Create a `.env` file in the root directory:
-```bash
-GOOGLE_API_KEY=your_api_key_here
-```
-
-## 💻 Usage
-
-### A. CLI (Command Line)
-
+### CLI Usage
 **Process Text:**
 ```bash
-python3 main.py --text "CBC: Hemglobin 10.2 g/dL (Low)"
+python3 main.py --text "CBC: Hemoglobin 10.2 g/dL (Low)"
 ```
 
 **Process Image:**
@@ -41,104 +74,29 @@ python3 main.py --text "CBC: Hemglobin 10.2 g/dL (Low)"
 python3 main.py --image path/to/report.jpg
 ```
 
-### B. API Server (FastAPI)
-
-1.  **Start the Server:**
-    ```bash
-    python3 app.py
-    ```
-    server runs at `http://0.0.0.0:8000`
-
-2.  **API Endpoints:**
-
-    *   `POST /process` (JSON Body):
-        ```json
-        {
-          "text": "CBC: Hemglobin 10.2 g/dL (Low)"
-        }
-        ```
-
-    *   `POST /process-image` (Form Data):
-    *   `POST /process-image` (Form Data):
-        *   `file`: (Upload your image file)
-        *   `model`: `gemini-flash-latest` (optional)
-
-### 3. Node.js/Express Version
-
-This project also supports a Node.js backend.
-
-**Setup:**
-1.  Install dependencies: `npm install`
-2.  Start server: `node server.js`
-    *(Runs on port 8000, same as Python verison)*
-3.  Use the exact same API endpoints as above.
-
-### 4. Frontend Web App
-
-A modern, responsive web interface is included.
-
-1.  Start the Node.js server: `node server.js`
-2.  Open your browser to: `http://localhost:8000`
-3.  Use the tabs to switch between **Text Input** and **Image Upload**.
-
-### 5. Deployment (Vercel)
-
-This project is configured for easy deployment on [Vercel](https://vercel.com).
-
-1.  **Install Vercel CLI**: `npm i -g vercel`
-2.  **Deploy**: Run `vercel` in the project directory.
-3.  **Environment Variables**: exact same `.env` values (add `GOOGLE_API_KEY` in Vercel settings).
-
-### C. Output Format
-
-The API returns a detailed JSON object showing the full pipeline:
-
-```json
-{
-  "step_1_extraction": {
-    "tests_raw": [ "Hemoglobin 10.2 g/dL (Low)" ],
-    "confidence": 0.95
-  },
-  "step_2_normalization": {
-    "tests": [
-      {
-        "name": "Hemoglobin",
-        "value": 10.2,
-        "unit": "g/dL",
-        "status": "low",
-        "ref_range": { "low": 12.0, "high": 15.0 }
-      }
-    ],
-    "normalization_confidence": 0.98
-  },
-  "step_3_summary": {
-    "summary": "Hemoglobin is low, indicating anemia.",
-    "explanations": [ "Low hemoglobin..." ]
-  },
-  "final_response": {
-    "tests": [...],
-    "summary": "Hemoglobin is low, indicating anemia.",
-    "status": "ok"
-  }
-}
+### Python API Server
+Start the FastAPI server (backend only, no UI):
+```bash
+python3 app.py
 ```
+*(Runs at `http://0.0.0.0:8000`)*
+
+---
 
 ## 📁 Project Structure
 
-*   `main.py`: Core processing engine (CLI + Logic).
-*   `app.py`: FastAPI web server wrapper.
-*   `prompts.py`: strict System Prompt and pipeline definition.
-*   `requirements.txt`: Python dependencies.
-
-## 🤖 Architecture
-
-1.  **Input**: Text or Image.
-2.  **Processing**: Google Gemini (Flash Model) with a strict System Prompt.
-    *   *Step 1*: OCR/Text Cleaning.
-    *   *Step 2*: Normalization (JSON).
-    *   *Step 3*: Summary Generation.
-3.  **Guardrails**: Returns "unprocessed" if hallucinations are detected.
-4.  **Output**: Standardized JSON.
+```
+├── server.js           # PRIMARY: Node.js Express Backend & Static Server
+├── public/             # PRIMARY: Frontend Web App (HTML/CSS/JS)
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
+├── vercel.json         # Deployment Configuration
+├── main.py             # SECONDARY: Python CLI Tool
+├── app.py              # SECONDARY: Python FastAPI Backend
+├── prompts.py          # Shared AI Logic & Systems Prompt
+└── requirements.txt    # Python Dependencies
+```
 
 ## 📝 License
 MIT
