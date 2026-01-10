@@ -233,9 +233,9 @@ async function processReport(inputData, modelName = "gemini-2.5-flash") {
 
 // --- API ENDPOINTS ---
 
-// Root
+// Root - Serve Frontend
 app.get('/', (req, res) => {
-  res.send({ message: "Medical Report Simplifier API (Node.js) is running." });
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Process Text
