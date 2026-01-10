@@ -62,6 +62,40 @@ python3 main.py --image path/to/report.jpg
         *   `file`: (Upload your image file)
         *   `model`: `gemini-flash-latest` (optional)
 
+### C. Output Format
+
+The API returns a detailed JSON object showing the full pipeline:
+
+```json
+{
+  "step_1_extraction": {
+    "tests_raw": [ "Hemoglobin 10.2 g/dL (Low)" ],
+    "confidence": 0.95
+  },
+  "step_2_normalization": {
+    "tests": [
+      {
+        "name": "Hemoglobin",
+        "value": 10.2,
+        "unit": "g/dL",
+        "status": "low",
+        "ref_range": { "low": 12.0, "high": 15.0 }
+      }
+    ],
+    "normalization_confidence": 0.98
+  },
+  "step_3_summary": {
+    "summary": "Hemoglobin is low, indicating anemia.",
+    "explanations": [ "Low hemoglobin..." ]
+  },
+  "final_response": {
+    "tests": [...],
+    "summary": "Hemoglobin is low, indicating anemia.",
+    "status": "ok"
+  }
+}
+```
+
 ## 📁 Project Structure
 
 *   `main.py`: Core processing engine (CLI + Logic).
