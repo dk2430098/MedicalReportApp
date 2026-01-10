@@ -4,6 +4,8 @@ const multer = require('multer');
 const cors = require('cors');
 const { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } = require('@google/generative-ai');
 
+const path = require('path');
+
 // --- CONFIGURATION ---
 const app = express();
 const port = 8000;
@@ -11,7 +13,7 @@ const port = 8000;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public')); // Serve static frontend files
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static frontend files (Absolute path)
 
 // File Upload Configuration (Memory Storage)
 const upload = multer({ storage: multer.memoryStorage() });
