@@ -11,6 +11,7 @@ const port = 8000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public')); // Serve static frontend files
 
 // File Upload Configuration (Memory Storage)
 const upload = multer({ storage: multer.memoryStorage() });
@@ -18,7 +19,7 @@ const upload = multer({ storage: multer.memoryStorage() });
 // Gemini API Setup
 const API_KEY = process.env.GOOGLE_API_KEY;
 if (!API_KEY) {
-    console.error("Error: GOOGLE_API_KEY is not set in environment or .env file.");
+  console.error("Error: GOOGLE_API_KEY is not set in environment or .env file.");
 }
 
 const genAI = new GoogleGenerativeAI(API_KEY);
@@ -179,99 +180,99 @@ You are:
 
 // --- HELPER FUNCTION: CALL GEMINI ---
 async function processReport(inputData, modelName = "gemini-flash-latest") {
-    try {
-        const model = genAI.getGenerativeModel({
-            model: modelName,
-            systemInstruction: SYSTEM_PROMPT,
-            generationConfig: { responseMimeType: "application/json" }
-        });
+  try {
+    const model = genAI.getGenerativeModel({
+      model: modelName,
+      systemInstruction: SYSTEM_PROMPT,
+      generationConfig: { responseMimeType: "application/json" }
+    });
 
-        const parts = [];
+    const parts = [];
 
-        // Handle Input Type (Text or Image Buffer)
-        if (Buffer.isBuffer(inputData)) {
-            parts.push({
-                inlineData: {
-                    data: inputData.toString("base64"),
-                    mimeType: "image/jpeg" // Adjust if needed, but jpeg usually works for generic image inputs
-                }
-            });
-            parts.push({ text: "Here is an image of a medical report. Extract and process the data." });
-        } else {
-            // Assume text
-            parts.push({ text: inputData });
+    // Handle Input Type (Text or Image Buffer)
+    if (Buffer.isBuffer(inputData)) {
+      parts.push({
+        inlineData: {
+          data: inputData.toString("base64"),
+          mimeType: "image/jpeg" // Adjust if needed, but jpeg usually works for generic image inputs
         }
-
-        // Safety Settings (Block None)
-        const safetySettings = [
-            { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
-            { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
-            { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
-            { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
-        ];
-
-        const result = await model.generateContent({
-            contents: [{ role: "user", parts: parts }],
-            safetySettings: safetySettings
-        });
-
-        const responseText = result.response.text();
-
-        try {
-            return JSON.parse(responseText);
-        } catch (parseError) {
-            return { status: "error", message: "Failed to parse JSON", raw: responseText };
-        }
-
-    } catch (error) {
-        return { status: "error", message: error.message };
+      });
+      parts.push({ text: "Here is an image of a medical report. Extract and process the data." });
+    } else {
+      // Assume text
+      parts.push({ text: inputData });
     }
+
+    // Safety Settings (Block None)
+    const safetySettings = [
+      { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_NONE },
+      { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+      { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_NONE },
+      { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_NONE },
+    ];
+
+    const result = await model.generateContent({
+      contents: [{ role: "user", parts: parts }],
+      safetySettings: safetySettings
+    });
+
+    const responseText = result.response.text();
+
+    try {
+      return JSON.parse(responseText);
+    } catch (parseError) {
+      return { status: "error", message: "Failed to parse JSON", raw: responseText };
+    }
+
+  } catch (error) {
+    return { status: "error", message: error.message };
+  }
 }
 
 // --- API ENDPOINTS ---
 
 // Root
 app.get('/', (req, res) => {
-    res.send({ message: "Medical Report Simplifier API (Node.js) is running." });
+  res.send({ message: "Medical Report Simplifier API (Node.js) is running." });
 });
 
 // Process Text
 app.post('/process', async (req, res) => {
-    try {
-        const { text, model } = req.body;
-        if (!text) {
-            return res.status(400).json({ error: "Text field is required." });
-        }
-
-        console.log(`Processing text with model: ${model || "default"}`);
-        const result = await processReport(text, model);
-        res.json(result);
-
-    } catch (error) {
-        res.status(500).json({ status: "error", message: error.message });
+  try {
+    const { text, model } = req.body;
+    if (!text) {
+      return res.status(400).json({ error: "Text field is required." });
     }
+
+    console.log(`Processing text with model: ${model || "default"}`);
+    const result = await processReport(text, model);
+    res.json(result);
+
+  } catch (error) {
+    res.status(500).json({ status: "error", message: error.message });
+  }
 });
 
 // Process Image
 app.post('/process-image', upload.single('file'), async (req, res) => {
-    try {
-        if (!req.file) {
-            return res.status(400).json({ error: "No file uploaded." });
-        }
-
-        const imageBuffer = req.file.buffer;
-        const model = req.body.model;
-
-        console.log(`Processing image with model: ${model || "default"}`);
-        const result = await processReport(imageBuffer, model);
-        res.json(result);
-
-    } catch (error) {
-        res.status(500).json({ status: "error", message: error.message });
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded." });
     }
+
+    const imageBuffer = req.file.buffer;
+    const model = req.body.model;
+
+    console.log(`Processing image with model: ${model || "default"}`);
+    const result = await processReport(imageBuffer, model);
+    res.json(result);
+
+  } catch (error) {
+    res.status(500).json({ status: "error", message: error.message });
+  }
 });
 
 // Start Server
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });

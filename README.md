@@ -73,6 +73,14 @@ This project also supports a Node.js backend.
     *(Runs on port 8000, same as Python verison)*
 3.  Use the exact same API endpoints as above.
 
+### 4. Frontend Web App
+
+A modern, responsive web interface is included.
+
+1.  Start the Node.js server: `node server.js`
+2.  Open your browser to: `http://localhost:8000`
+3.  Use the tabs to switch between **Text Input** and **Image Upload**.
+
 ### C. Output Format
 
 The API returns a detailed JSON object showing the full pipeline:
