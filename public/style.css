@@ -385,14 +385,62 @@ th {
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
-    .split-view {
-        grid-template-columns: 1fr;
+    body {
+        padding: 0;
+        overflow-y: auto;
     }
 
-    .input-card,
-    textarea,
-    .upload-area {
+    .app-wrapper {
+        padding: 1rem;
         height: auto;
-        min-height: 200px;
+        display: block;
+        /* Remove flex column behavior on mobile to allow natural scroll */
+    }
+
+    .split-view {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        display: block;
+        /* Stack blocks naturally */
+    }
+
+    .left-panel,
+    .right-panel {
+        margin-bottom: 2rem;
+        height: auto;
+        /* Allow auto height */
+        overflow: visible;
+        /* Remove internal scrollbars on mobile */
+    }
+
+    .right-panel {
+        background: transparent;
+        border: none;
+        padding: 0;
+    }
+
+    .card {
+        margin-bottom: 1rem;
+        max-height: none;
+        /* Remove height limits */
+    }
+
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    textarea {
+        height: 150px;
+    }
+
+    .upload-area {
+        padding: 2rem 1rem;
+        height: 200px;
+    }
+
+    /* Make table scrollable */
+    .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 }
