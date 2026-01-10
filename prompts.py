@@ -94,13 +94,38 @@ If **ANY test appears in your output that was NOT present in input**, you MUST i
 
 ## 🔹 STEP 4 — FINAL RESPONSE FORMAT
 
-If everything is valid, return:
+If everything is valid, return a JSON object containing the details of all steps:
 
 ```json
 {
-  "tests": [...normalized tests...],
-  "summary": "...",
-  "status": "ok"
+  "step_1_extraction": {
+    "tests_raw": ["<test line 1>", "<test line 2>"],
+    "confidence": <0 to 1>
+  },
+  "step_2_normalization": {
+    "tests": [
+      {
+        "name": "Hemoglobin",
+        "value": 10.2,
+        "unit": "g/dL",
+        "status": "low",
+        "ref_range": { "low": 12.0, "high": 15.0 }
+      }
+    ],
+    "normalization_confidence": <0 to 1>
+  },
+  "step_3_summary": {
+    "summary": "Short simple summary sentence",
+    "explanations": [
+      "Simple explanation line 1",
+      "Simple explanation line 2"
+    ]
+  },
+  "final_response": {
+    "tests": [...normalized tests from step 2...],
+    "summary": "Short simple summary sentence from step 3",
+    "status": "ok"
+  }
 }
 ```
 
