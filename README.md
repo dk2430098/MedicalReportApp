@@ -2,7 +2,7 @@
 
 A smart web application that converts medical reports (text or images) into structured, patient-friendly JSON using Google Gemini's AI.
 
-![Frontend UI](https://dummyimage.com/800x400/0f172a/3b82f6.png&text=Medical+Report+Simplifier+UI)
+![Frontend UI](public/screenshot.png)
 
 ## 🚀 Key Features
 
