@@ -80,7 +80,7 @@ def main():
     parser.add_argument("--text", type=str, help="Raw medical report text to process")
     parser.add_argument("--file", type=str, help="Path to a text file containing the report")
     parser.add_argument("--image", type=str, help="Path to an image file (JPG/PNG) containing the report")
-    parser.add_argument("--model", type=str, default="gemini-1.5-flash", help="Gemini model to use (default: gemini-1.5-flash)")
+    parser.add_argument("--model", type=str, default="gemini-1.5-flash-latest", help="Gemini model to use (default: gemini-1.5-flash-latest)")
     
     args = parser.parse_args()
 

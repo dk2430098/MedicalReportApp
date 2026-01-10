@@ -179,7 +179,7 @@ You are:
 `;
 
 // --- HELPER FUNCTION: CALL GEMINI ---
-async function processReport(inputData, modelName = "gemini-1.5-flash") {
+async function processReport(inputData, modelName = "gemini-1.5-flash-latest") {
   try {
     const model = genAI.getGenerativeModel({
       model: modelName,
