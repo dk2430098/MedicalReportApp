@@ -114,6 +114,65 @@ p {
     margin-bottom: 1rem;
 }
 
+/* DEBUG DETAILS */
+.debug-details {
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: rgba(15, 23, 42, 0.4);
+    transition: all 0.2s;
+}
+
+.debug-details[open] {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: var(--primary);
+}
+
+.debug-details summary {
+    padding: 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    /* Hide default triangle */
+    transition: color 0.2s;
+}
+
+/* Custom arrow/icon */
+.debug-details summary::before {
+    content: '▶';
+    font-size: 0.8em;
+    transition: transform 0.2s;
+    display: inline-block;
+}
+
+.debug-details[open] summary::before {
+    transform: rotate(90deg);
+}
+
+.debug-details summary:hover {
+    color: var(--primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.debug-details pre {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    margin: 0;
+    border-top: 1px solid var(--border);
+    overflow-x: auto;
+    font-size: 0.85rem;
+    color: #a5b4fc;
+    /* Light indigo for code */
+    max-height: 300px;
+    /* Limit height */
+    overflow-y: auto;
+}
+
 /* TABS */
 .tabs {
     display: flex;
