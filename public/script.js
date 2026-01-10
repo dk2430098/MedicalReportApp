@@ -42,9 +42,11 @@ async function processImage() {
 async function callApi(endpoint, options) {
     const loading = document.getElementById('loading');
     const results = document.getElementById('results');
+    const placeholder = document.getElementById('placeholder-state');
 
-    loading.classList.remove('hidden');
+    placeholder.classList.add('hidden');
     results.classList.add('hidden');
+    loading.classList.remove('hidden');
 
     try {
         const response = await fetch(endpoint, options);
@@ -53,6 +55,7 @@ async function callApi(endpoint, options) {
         displayResults(data);
     } catch (error) {
         alert("Error processing report: " + error.message);
+        placeholder.classList.remove('hidden'); // Show placeholder again on error
     } finally {
         loading.classList.add('hidden');
     }
@@ -60,6 +63,9 @@ async function callApi(endpoint, options) {
 
 function displayResults(data) {
     const results = document.getElementById('results');
+    const placeholder = document.getElementById('placeholder-state');
+
+    placeholder.classList.add('hidden'); // Ensure placeholder is gone
     const summaryText = document.getElementById('summary-text');
     const explanationsList = document.getElementById('explanations-list');
     const resultsTable = document.getElementById('results-table');

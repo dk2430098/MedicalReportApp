@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,71 +10,89 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    <div class="container">
+    <div class="app-wrapper">
         <header>
             <h1>Medical Report Simplifier</h1>
             <p>Upload a report or paste text to get a patient-friendly summary.</p>
         </header>
 
-        <main>
-            <div class="input-section">
-                <div class="tabs">
-                    <button class="tab-btn active" onclick="switchTab('text')">Text Input</button>
-                    <button class="tab-btn" onclick="switchTab('image')">Image Upload</button>
-                </div>
-
-                <div id="text-input" class="tab-content active">
-                    <textarea id="report-text" placeholder="Paste medical report text here (e.g., CBC: Hemoglobin 10.2 g/dL)..."></textarea>
-                    <button class="action-btn" onclick="processText()">Analyze Text</button>
-                </div>
-
-                <div id="image-input" class="tab-content">
-                    <div class="upload-area" onclick="document.getElementById('report-image').click()">
-                        <p>Click to upload or drag & drop</p>
-                        <span id="file-name">No file selected</span>
-                        <input type="file" id="report-image" accept="image/*" hidden onchange="updateFileName()">
+        <main class="split-view">
+            <!-- LEFT PANEL: INPUT -->
+            <section class="left-panel">
+                <div class="card input-card">
+                    <div class="tabs">
+                        <button class="tab-btn active" onclick="switchTab('text')">Text Input</button>
+                        <button class="tab-btn" onclick="switchTab('image')">Image Upload</button>
                     </div>
-                    <button class="action-btn" onclick="processImage()">Analyze Image</button>
+
+                    <div id="text-input" class="tab-content active">
+                        <textarea id="report-text"
+                            placeholder="Paste medical report text here (e.g., CBC: Hemoglobin 10.2 g/dL)..."></textarea>
+                        <button class="action-btn" onclick="processText()">Analyze Text</button>
+                    </div>
+
+                    <div id="image-input" class="tab-content">
+                        <div class="upload-area" onclick="document.getElementById('report-image').click()">
+                            <div class="upload-icon">📁</div>
+                            <p>Click to upload or drag & drop</p>
+                            <span id="file-name">No file selected</span>
+                            <input type="file" id="report-image" accept="image/*" hidden onchange="updateFileName()">
+                        </div>
+                        <button class="action-btn" onclick="processImage()">Analyze Image</button>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <div id="loading" class="hidden">
-                <div class="spinner"></div>
-                <p>Analyzing medical data...</p>
-            </div>
-
-            <div id="results" class="hidden">
-                <div class="result-card summary-card">
-                    <h3>🩺 Analysis Summary</h3>
-                    <p id="summary-text"></p>
-                    <ul id="explanations-list"></ul>
-                </div>
-
-                <div class="result-card">
-                    <h3>📊 Normalized Results</h3>
-                    <div class="table-wrapper">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Test Name</th>
-                                    <th>Value</th>
-                                    <th>Status</th>
-                                    <th>Ref Range</th>
-                                </tr>
-                            </thead>
-                            <tbody id="results-table"></tbody>
-                        </table>
+            <!-- RIGHT PANEL: RESULTS -->
+            <section class="right-panel">
+                <div id="placeholder-state">
+                    <div class="placeholder-content">
+                        <div class="icon">👋</div>
+                        <h3>Ready to Analyze</h3>
+                        <p>Your results will appear here.</p>
                     </div>
                 </div>
 
-                <details class="debug-details">
-                    <summary>View Debug Info (Raw Data)</summary>
-                    <pre id="raw-json"></pre>
-                </details>
-            </div>
+                <div id="loading" class="hidden">
+                    <div class="spinner"></div>
+                    <p>Analyzing medical data...</p>
+                </div>
+
+                <div id="results" class="hidden">
+                    <div class="card result-card summary-card">
+                        <h3>🩺 Analysis Summary</h3>
+                        <p id="summary-text"></p>
+                        <ul id="explanations-list"></ul>
+                    </div>
+
+                    <div class="card result-card">
+                        <h3>📊 Normalized Results</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Test Name</th>
+                                        <th>Value</th>
+                                        <th>Status</th>
+                                        <th>Ref Range</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="results-table"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <details class="debug-details">
+                        <summary>View Debug Info (Raw Data)</summary>
+                        <pre id="raw-json"></pre>
+                    </details>
+                </div>
+            </section>
         </main>
     </div>
     <script src="script.js"></script>
 </body>
+
 </html>
