@@ -59,8 +59,19 @@ python3 main.py --image path/to/report.jpg
         ```
 
     *   `POST /process-image` (Form Data):
+    *   `POST /process-image` (Form Data):
         *   `file`: (Upload your image file)
         *   `model`: `gemini-flash-latest` (optional)
+
+### 3. Node.js/Express Version
+
+This project also supports a Node.js backend.
+
+**Setup:**
+1.  Install dependencies: `npm install`
+2.  Start server: `node server.js`
+    *(Runs on port 8000, same as Python verison)*
+3.  Use the exact same API endpoints as above.
 
 ### C. Output Format
 
