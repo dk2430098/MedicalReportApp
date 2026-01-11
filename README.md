@@ -1,5 +1,5 @@
 # AI-Powered Medical Report Simplifier
-[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Visit%20Website-blue?style=for-the-badge)](https://medical-report-app.vercel.app/)
+[![Live Demo](https://medical-report-app.vercel.app/🚀%20Live%20Demo-Visit%20Website-blue?style=for-the-badge)](https://medical-report-app.vercel.app/)
 
 
 A smart web application that converts medical reports (text or images) into structured, patient-friendly JSON using Google Gemini's AI.
