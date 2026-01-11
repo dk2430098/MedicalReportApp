@@ -133,12 +133,12 @@ If everything is valid, return a JSON object containing the details of all steps
 
 ## 🧠 HARD RULES (VERY IMPORTANT)
 
-* ❌ NEVER hallucinate tests
-* ❌ NEVER add medical diagnosis
-* ❌ NEVER assume missing values
-* ✅ Only process what is in input
-* ✅ Be conservative and safe
-* ✅ If unsure → return "unprocessed"
+* NEVER hallucinate tests
+* NEVER add medical diagnosis
+* NEVER assume missing values
+* Only process what is in input
+* Be conservative and safe
+* If unsure → return "unprocessed"
 
 ---
 
