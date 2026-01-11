@@ -1,5 +1,5 @@
-const API_BASE_URL = 'http://localhost:8000'; // CHANGE THIS TO YOUR RENDER URL IN PRODUCTION
-// Example: const API_BASE_URL = 'https://my-backend-app.onrender.com';
+const API_BASE_URL = 'https://medicalreportapp.onrender.com'; // Render Backend URL
+// Local: const API_BASE_URL = 'http://localhost:8000';
 
 function switchTab(tab) {
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));

@@ -269,9 +269,13 @@ app.post('/process-image', upload.single('file'), async (req, res) => {
     const result = await processReport(imageBuffer, model);
     res.json(result);
 
-  } catch (error) {
     res.status(500).json({ status: "error", message: error.message });
   }
+});
+
+// Keep-Alive Endpoint (Cron Job)
+app.get('/ping', (req, res) => {
+  res.status(200).json({ status: "ok", message: "Server is awake" });
 });
 
 // Start Server (Only if running directly)
