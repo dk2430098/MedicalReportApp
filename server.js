@@ -269,6 +269,7 @@ app.post('/process-image', upload.single('file'), async (req, res) => {
     const result = await processReport(imageBuffer, model);
     res.json(result);
 
+  } catch (error) {
     res.status(500).json({ status: "error", message: error.message });
   }
 });
