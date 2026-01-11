@@ -45,14 +45,64 @@ Open your browser to: **http://localhost:8000**
 
 ---
 
-## ☁️ Deployment (Vercel)
+## ☁️ Deployment (Split Architecture)
 
-This project is configured for one-click deployment on [Vercel](https://vercel.com).
+To avoid serverless timeouts, we split the application:
+*   **Backend (API)**: Hosted on **Render** (Node.js).
+*   **Frontend (UI)**: Hosted on **Vercel** (Static).
 
-1.  **Install Vercel CLI**: `npm i -g vercel`
-2.  **Deploy**: Run `vercel` in the project directory.
-    *   *Select "Other" as the framework preset if asked.*
-3.  **Environment Variables**: Add `GOOGLE_API_KEY` in your Vercel Project Settings.
+### 1. Deploy Backend (Render)
+1.  Push code to GitHub.
+2.  Create a **Web Service** on [Render](https://render.com).
+3.  **Settings**:
+    *   Build Command: `npm install`
+    *   Start Command: `node server.js`
+    *   Env Var: `GOOGLE_API_KEY` = `your_gemini_key`
+4.  Copy your **Render URL** (e.g., `https://myapp.onrender.com`).
+
+### 2. Configure Frontend
+1.  Open `public/script.js`.
+2.  Update `API_BASE_URL` with your Render URL:
+    ```javascript
+    const API_BASE_URL = 'https://myapp.onrender.com';
+    ```
+
+### 3. Deploy Frontend (Vercel)
+1.  Run `vercel`.
+2.  **Preset**: Choose **Other**.
+3.  **Root Directory**: `./` (Default).
+4.  **Deploy!**
+
+---
+
+## 🔌 API Documentation
+
+You can use the backend independently via Postman or cURL.
+
+### Base URL
+`https://medicalreportapp.onrender.com` (or your Render URL)
+
+### 1. Process Text
+*   **Endpoint**: `/process`
+*   **Method**: `POST`
+*   **Headers**: `Content-Type: application/json`
+*   **Body**:
+    ```json
+    {
+      "text": "Patient: John Doe. WBC: 5.0 (Normal). Hemoglobin: 12.5 g/dL."
+    }
+    ```
+
+### 2. Process Image
+*   **Endpoint**: `/process-image`
+*   **Method**: `POST`
+*   **Body**: `form-data`
+    *   `file`: (Upload Image File)
+
+### 3. Keep-Alive (Cron Job)
+*   **Endpoint**: `/ping`
+*   **Method**: `GET`
+*   **Response**: `{"status": "ok", "message": "Server is awake"}`
 
 ---
 
