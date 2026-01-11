@@ -1,3 +1,6 @@
+const API_BASE_URL = 'http://localhost:8000'; // CHANGE THIS TO YOUR RENDER URL IN PRODUCTION
+// Example: const API_BASE_URL = 'https://my-backend-app.onrender.com';
+
 function switchTab(tab) {
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -19,7 +22,7 @@ async function processText() {
     const text = document.getElementById('report-text').value;
     if (!text) return alert("Please enter some text.");
 
-    await callApi('/process', {
+    await callApi(`${API_BASE_URL}/process`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: text })
@@ -33,7 +36,7 @@ async function processImage() {
     const formData = new FormData();
     formData.append('file', fileInput.files[0]);
 
-    await callApi('/process-image', {
+    await callApi(`${API_BASE_URL}/process-image`, {
         method: 'POST',
         body: formData
     });
