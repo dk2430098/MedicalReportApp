@@ -181,7 +181,7 @@ You are:
 `;
 
 // --- HELPER FUNCTION: CALL GEMINI ---
-async function processReport(inputData, modelName = "gemini-2.5-flash") {
+async function processReport(inputData, modelName = "gemini-2.5-flash", mimeType = "image/jpeg") {
   try {
     const model = genAI.getGenerativeModel({
       model: modelName,
@@ -196,7 +196,7 @@ async function processReport(inputData, modelName = "gemini-2.5-flash") {
       parts.push({
         inlineData: {
           data: inputData.toString("base64"),
-          mimeType: "image/jpeg" // Adjust if needed, but jpeg usually works for generic image inputs
+          mimeType: mimeType
         }
       });
       parts.push({ text: "Here is an image of a medical report. Extract and process the data." });
@@ -264,9 +264,10 @@ app.post('/process-image', upload.single('file'), async (req, res) => {
 
     const imageBuffer = req.file.buffer;
     const model = req.body.model;
+    const mimeType = req.file.mimetype;
 
-    console.log(`Processing image with model: ${model || "default"}`);
-    const result = await processReport(imageBuffer, model);
+    console.log(`Processing image with model: ${model || "default"} (${mimeType})`);
+    const result = await processReport(imageBuffer, model, mimeType);
     res.json(result);
 
   } catch (error) {

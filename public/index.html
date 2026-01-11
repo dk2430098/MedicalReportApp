@@ -34,12 +34,12 @@
                     </div>
 
                     <div id="image-input" class="tab-content">
-                        <div class="upload-area" onclick="document.getElementById('report-image').click()">
+                        <label class="upload-area" for="report-image">
                             <div class="upload-icon">📁</div>
                             <p>Click to upload or drag & drop</p>
                             <span id="file-name">No file selected</span>
                             <input type="file" id="report-image" accept="image/*" hidden onchange="updateFileName()">
-                        </div>
+                        </label>
                         <button class="action-btn" onclick="processImage()">Analyze Image</button>
                     </div>
                 </div>
